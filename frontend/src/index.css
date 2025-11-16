@@ -1,0 +1,181 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    /* Nails Nice - Rosado Pastel & Blanco */
+    --background: 0 0% 100%;
+    --foreground: 340 15% 25%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 340 15% 25%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 340 15% 25%;
+
+    /* Rosado pastel como color principal */
+    --primary: 350 100% 86%;
+    --primary-foreground: 340 15% 25%;
+    --primary-hover: 350 100% 80%;
+    --primary-glow: 350 100% 92%;
+
+    /* Beige rosado como secundario */
+    --secondary: 345 30% 94%;
+    --secondary-foreground: 340 15% 25%;
+
+    --muted: 345 20% 96%;
+    --muted-foreground: 340 10% 50%;
+
+    /* Rosa palo más oscuro como accent */
+    --accent: 345 45% 88%;
+    --accent-foreground: 340 15% 25%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 345 25% 92%;
+    --input: 345 25% 95%;
+    --ring: 350 100% 86%;
+
+    --radius: 0.75rem;
+    
+    /* Sombras 3D suaves */
+    --shadow-soft: 0 2px 8px rgba(255, 182, 193, 0.15);
+    --shadow-medium: 0 4px 16px rgba(255, 182, 193, 0.2);
+    --shadow-deep: 0 8px 24px rgba(255, 182, 193, 0.25);
+    --shadow-glow: 0 0 20px rgba(255, 182, 193, 0.3);
+    
+    /* Gradientes */
+    --gradient-primary: linear-gradient(135deg, hsl(350 100% 86%), hsl(345 100% 92%));
+    --gradient-soft: linear-gradient(180deg, hsl(0 0% 100%), hsl(345 30% 98%));
+    --gradient-accent: linear-gradient(135deg, hsl(345 45% 88%), hsl(340 50% 92%));
+    
+    /* Transiciones suaves */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 340 20% 10%;
+    --foreground: 345 30% 95%;
+
+    --card: 340 15% 12%;
+    --card-foreground: 345 30% 95%;
+
+    --popover: 340 15% 12%;
+    --popover-foreground: 345 30% 95%;
+
+    --primary: 350 100% 86%;
+    --primary-foreground: 340 15% 25%;
+    --primary-hover: 350 100% 80%;
+    --primary-glow: 350 100% 92%;
+
+    --secondary: 340 15% 18%;
+    --secondary-foreground: 345 30% 95%;
+
+    --muted: 340 10% 20%;
+    --muted-foreground: 340 10% 65%;
+
+    --accent: 345 45% 35%;
+    --accent-foreground: 345 30% 95%;
+
+    --destructive: 0 62.8% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 340 15% 20%;
+    --input: 340 15% 18%;
+    --ring: 350 100% 86%;
+    
+    --sidebar-background: 340 20% 10%;
+    --sidebar-foreground: 345 30% 95%;
+    --sidebar-primary: 350 100% 86%;
+    --sidebar-primary-foreground: 340 15% 25%;
+    --sidebar-accent: 340 15% 18%;
+    --sidebar-accent-foreground: 345 30% 95%;
+    --sidebar-border: 340 15% 20%;
+    --sidebar-ring: 350 100% 86%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-body;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+  }
+}
+
+@layer utilities {
+  .shadow-soft {
+    box-shadow: var(--shadow-soft);
+  }
+  
+  .shadow-medium {
+    box-shadow: var(--shadow-medium);
+  }
+  
+  .shadow-deep {
+    box-shadow: var(--shadow-deep);
+  }
+  
+  .shadow-glow {
+    box-shadow: var(--shadow-glow);
+  }
+  
+  .gradient-primary {
+    background: var(--gradient-primary);
+  }
+  
+  .gradient-soft {
+    background: var(--gradient-soft);
+  }
+  
+  .gradient-accent {
+    background: var(--gradient-accent);
+  }
+  
+  .transition-smooth {
+    transition: var(--transition-smooth);
+  }
+  
+  .transition-bounce {
+    transition: var(--transition-bounce);
+  }
+  
+  .hover-lift {
+    @apply transition-smooth hover:-translate-y-1 hover:shadow-medium;
+  }
+  
+  .hover-glow {
+    @apply transition-smooth hover:shadow-glow;
+  }
+}
