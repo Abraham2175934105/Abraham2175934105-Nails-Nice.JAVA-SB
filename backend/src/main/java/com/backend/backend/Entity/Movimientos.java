@@ -2,7 +2,6 @@ package com.backend.backend.Entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "movimientos")
@@ -11,7 +10,7 @@ public class Movimientos {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_movimientos")
-    private Integer id;
+    private Integer idMovimientos;
 
     @ManyToOne
     @JoinColumn(name = "id_producto", nullable = false)
@@ -21,7 +20,7 @@ public class Movimientos {
     @JoinColumn(name = "id_inventario", nullable = false)
     private Inventario inventario;
 
-    @Column(name = "tipo_movimiento", nullable = false, length = 20)
+    @Column(name = "tipo_movimiento", nullable = false)
     private String tipoMovimiento;
 
     @Column(name = "cantidad_movimiento", nullable = false)
@@ -30,18 +29,11 @@ public class Movimientos {
     @Column(name = "fecha_movimiento", nullable = false)
     private LocalDate fechaMovimiento;
 
-    @Column(name = "descripcion_movimiento", nullable = false, length = 255)
+    @Column(name = "descripcion_movimiento", nullable = false)
     private String descripcionMovimiento;
 
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
-
-    // Getters y Setters
-    public Integer getId() { return id; }
-    public void setId(Integer id) { this.id = id; }
+    public Integer getIdMovimientos() { return idMovimientos; }
+    public void setIdMovimientos(Integer idMovimientos) { this.idMovimientos = idMovimientos; }
 
     public Producto getProducto() { return producto; }
     public void setProducto(Producto producto) { this.producto = producto; }
@@ -60,11 +52,4 @@ public class Movimientos {
 
     public String getDescripcionMovimiento() { return descripcionMovimiento; }
     public void setDescripcionMovimiento(String descripcionMovimiento) { this.descripcionMovimiento = descripcionMovimiento; }
-
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
-
-    public LocalDateTime getUpdatedAt() { return updatedAt; }
-    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
 }
-

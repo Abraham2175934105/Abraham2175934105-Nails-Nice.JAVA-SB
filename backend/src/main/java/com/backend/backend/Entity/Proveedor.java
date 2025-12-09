@@ -1,10 +1,12 @@
 package com.backend.backend.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import java.util.Set;
 
 @Entity
 @Table(name = "proveedor")
+@JsonIgnoreProperties({"inventarios"}) // evita serializar la colección inventarios y rompe la recursión
 public class Proveedor {
 
     @Id
@@ -46,4 +48,3 @@ public class Proveedor {
     public Set<Inventario> getInventarios() { return inventarios; }
     public void setInventarios(Set<Inventario> inventarios) { this.inventarios = inventarios; }
 }
-

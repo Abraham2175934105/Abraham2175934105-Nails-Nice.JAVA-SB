@@ -1,7 +1,8 @@
 package com.backend.backend.Entity;
 
 import jakarta.persistence.*;
-import java.util.Set;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.List;
 
 @Entity
 @Table(name = "unidad_medida")
@@ -15,17 +16,17 @@ public class UnidadMedida {
     @Column(name = "nombre_medida", nullable = false, length = 50)
     private String nombreMedida;
 
-    // Relación con productos
-    @OneToMany(mappedBy = "unidadMedida")
-    private Set<Producto> productos;
+    @OneToMany(mappedBy = "unidadMedida", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Producto> productos;
 
-    // Getters y Setters
+    // getters y setters
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
 
     public String getNombreMedida() { return nombreMedida; }
     public void setNombreMedida(String nombreMedida) { this.nombreMedida = nombreMedida; }
 
-    public Set<Producto> getProductos() { return productos; }
-    public void setProductos(Set<Producto> productos) { this.productos = productos; }
+    public List<Producto> getProductos() { return productos; }
+    public void setProductos(List<Producto> productos) { this.productos = productos; }
 }

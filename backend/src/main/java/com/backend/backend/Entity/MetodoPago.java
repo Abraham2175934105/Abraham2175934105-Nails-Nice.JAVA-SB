@@ -1,5 +1,6 @@
 package com.backend.backend.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.util.Set;
 
@@ -19,6 +20,7 @@ public class MetodoPago {
     private String tipoMetodo;
 
     @OneToMany(mappedBy = "metodoPago")
+    @JsonIgnore // <-- evita serializar la colección de ventas y rompe la recursión
     private Set<Ventas> ventas;
 
     // Getters y Setters
@@ -35,4 +37,3 @@ public class MetodoPago {
     public void setVentas(Set<Ventas> ventas) { this.ventas = ventas; }
 
 }
-

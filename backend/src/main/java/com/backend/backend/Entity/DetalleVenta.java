@@ -9,7 +9,7 @@ public class DetalleVenta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_detalle_venta")
-    private Integer id;
+    private Integer idDetalleVenta;
 
     @ManyToOne
     @JoinColumn(name = "id_ventas", nullable = false)
@@ -28,22 +28,61 @@ public class DetalleVenta {
     @Column(name = "subtotal", nullable = false)
     private Double subtotal;
 
-    // Getters y Setters
-    public Integer getId() { return id; }
-    public void setId(Integer id) { this.id = id; }
+    // Getters / Setters "canónicos"
+    public Integer getIdDetalleVenta() {
+        return idDetalleVenta;
+    }
 
-    public Ventas getVentas() { return ventas; }
-    public void setVentas(Ventas ventas) { this.ventas = ventas; }
+    public void setIdDetalleVenta(Integer idDetalleVenta) {
+        this.idDetalleVenta = idDetalleVenta;
+    }
 
-    public Producto getProducto() { return producto; }
-    public void setProducto(Producto producto) { this.producto = producto; }
+    public Ventas getVentas() {
+        return ventas;
+    }
 
-    public Integer getCantidad() { return cantidad; }
-    public void setCantidad(Integer cantidad) { this.cantidad = cantidad; }
+    public void setVentas(Ventas ventas) {
+        this.ventas = ventas;
+    }
 
-    public Double getPrecioUnitario() { return precioUnitario; }
-    public void setPrecioUnitario(Double precioUnitario) { this.precioUnitario = precioUnitario; }
+    public Producto getProducto() {
+        return producto;
+    }
 
-    public Double getSubtotal() { return subtotal; }
-    public void setSubtotal(Double subtotal) { this.subtotal = subtotal; }
+    public void setProducto(Producto producto) {
+        this.producto = producto;
+    }
+
+    public Integer getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(Integer cantidad) {
+        this.cantidad = cantidad;
+    }
+
+    public Double getPrecioUnitario() {
+        return precioUnitario;
+    }
+
+    public void setPrecioUnitario(Double precioUnitario) {
+        this.precioUnitario = precioUnitario;
+    }
+
+    public Double getSubtotal() {
+        return subtotal;
+    }
+
+    public void setSubtotal(Double subtotal) {
+        this.subtotal = subtotal;
+    }
+
+    // Adaptador: muchos controladores/repositories llaman getId() — añadimos compatibilidad
+    public Integer getId() {
+        return this.idDetalleVenta;
+    }
+
+    public void setId(Integer id) {
+        this.idDetalleVenta = id;
+    }
 }

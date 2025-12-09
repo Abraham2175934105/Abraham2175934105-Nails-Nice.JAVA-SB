@@ -4,10 +4,11 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name = "pedido")
 public class Pedido {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_pedido")
@@ -32,7 +33,8 @@ public class Pedido {
     @Column(name = "cantidad_pedido", nullable = false)
     private Integer cantidadPedido;
 
-    @OneToMany(mappedBy = "pedido")
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference // evita ciclo al serializar hijos
     private Set<PedidoProducto> productos;
 
     // Getters y Setters

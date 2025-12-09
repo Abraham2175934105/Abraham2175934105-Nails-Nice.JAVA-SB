@@ -3,6 +3,7 @@ package com.backend.backend.Entity;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "productos")
@@ -28,20 +29,26 @@ public class Producto {
     @Column(name = "imagen", length = 255)
     private String imagen;
 
+    // Aquí indicamos que al serializar color/ marca / categoria / unidad,
+    // se ignore la propiedad "productos" para evitar recursión
     @ManyToOne
     @JoinColumn(name = "id_color")
+    @JsonIgnoreProperties("productos")
     private Color color;
 
     @ManyToOne
     @JoinColumn(name = "id_marca")
+    @JsonIgnoreProperties("productos")
     private Marca marca;
 
     @ManyToOne
     @JoinColumn(name = "id_unidad_medida")
+    @JsonIgnoreProperties("productos")
     private UnidadMedida unidadMedida;
 
     @ManyToOne
     @JoinColumn(name = "id_categoria")
+    @JsonIgnoreProperties("productos")
     private Categoria categoria;
 
     @Column(name = "created_at")
@@ -50,7 +57,7 @@ public class Producto {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    // Getters y Setters
+    // Getters y setters (asegúrate que existen)
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
 
@@ -87,4 +94,3 @@ public class Producto {
     public LocalDateTime getUpdatedAt() { return updatedAt; }
     public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
 }
-

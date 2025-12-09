@@ -82,27 +82,38 @@ const ServicesSection = () => {
               ))}
             </div>
             
-            <div className="flex items-center gap-2 mt-6 p-4 rounded-lg bg-secondary/50">
-              <Clock className="h-5 w-5 text-primary" />
-              <div>
-                <p className="font-semibold">Horario de Atención</p>
-                <p className="text-sm text-muted-foreground">Lun - Sáb: 9:00 AM - 8:00 PM</p>
+            <Card className="mt-6 p-6 shadow-medium border-2 border-primary/20">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="p-3 rounded-full bg-primary/10">
+                  <Clock className="h-6 w-6 text-primary" />
+                </div>
+                <h4 className="text-xl font-bold text-foreground">Horario de Atención</h4>
               </div>
-            </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="p-3 bg-accent/30 rounded-lg text-center">
+                  <p className="text-sm text-muted-foreground mb-1">Lunes - Viernes</p>
+                  <p className="font-bold text-foreground">9:00 AM - 8:00 PM</p>
+                </div>
+                <div className="p-3 bg-accent/30 rounded-lg text-center">
+                  <p className="text-sm text-muted-foreground mb-1">Sábados</p>
+                  <p className="font-bold text-foreground">9:00 AM - 6:00 PM</p>
+                </div>
+              </div>
+            </Card>
           </div>
 
           {/* WhatsApp CTA */}
           <div className="animate-scale-in" style={{ animationDelay: '0.4s' }}>
-            <Card className="p-8 shadow-deep gradient-primary text-center">
-              <MessageCircle className="h-16 w-16 text-white mx-auto mb-4" />
-              <h4 className="text-3xl font-bold text-white mb-3">
+            <Card className="p-8 shadow-deep bg-primary/10 border-2 border-primary/20 text-center">
+              <MessageCircle className="h-16 w-16 text-primary mx-auto mb-4" />
+              <h4 className="text-3xl font-bold text-foreground mb-3">
                 Reserva por WhatsApp
               </h4>
-              <p className="text-white/90 mb-6">
+              <p className="text-muted-foreground mb-6">
                 Contacta con nuestro asesor para agendar tu cita en la sede de tu preferencia
               </p>
               <Button 
-                variant="secondary" 
+                variant="default"
                 size="lg" 
                 className="w-full shadow-medium hover:shadow-deep"
                 onClick={() => window.open('https://wa.me/1234567890', '_blank')}
@@ -110,7 +121,7 @@ const ServicesSection = () => {
                 <MessageCircle className="h-5 w-5 mr-2" />
                 Chatear Ahora
               </Button>
-              <p className="text-sm text-white/70 mt-4">
+              <p className="text-sm text-foreground/80 mt-4 font-semibold">
                 Respuesta inmediata • Atención personalizada
               </p>
             </Card>

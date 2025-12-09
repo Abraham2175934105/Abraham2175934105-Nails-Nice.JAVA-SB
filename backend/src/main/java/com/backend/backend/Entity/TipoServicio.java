@@ -1,7 +1,6 @@
 package com.backend.backend.Entity;
 
 import jakarta.persistence.*;
-import java.util.Set;
 
 @Entity
 @Table(name = "tipo_servicio")
@@ -10,21 +9,27 @@ public class TipoServicio {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_tipo_servicio")
-    private Integer id;
+    private Integer idTipoServicio;
 
-    @Column(name = "nombre_tipo", nullable = false, length = 50)
+    @Column(name = "nombre_tipo", nullable = false)
     private String nombreTipo;
 
-    @OneToMany(mappedBy = "tipoServicio")
-    private Set<Servicios> servicios;
+    // getters / setters
+    public Integer getIdTipoServicio() {
+        return idTipoServicio;
+    }
 
-    // Getters y Setters
+    public void setIdTipoServicio(Integer idTipoServicio) {
+        this.idTipoServicio = idTipoServicio;
+    }
+
+    // adaptadores para compatibilidad
     public Integer getId() {
-        return id;
+        return idTipoServicio;
     }
 
     public void setId(Integer id) {
-        this.id = id;
+        this.idTipoServicio = id;
     }
 
     public String getNombreTipo() {
@@ -34,13 +39,4 @@ public class TipoServicio {
     public void setNombreTipo(String nombreTipo) {
         this.nombreTipo = nombreTipo;
     }
-
-    public Set<Servicios> getServicios() {
-        return servicios;
-    }
-
-    public void setServicios(Set<Servicios> servicios) {
-        this.servicios = servicios;
-    }
-
 }

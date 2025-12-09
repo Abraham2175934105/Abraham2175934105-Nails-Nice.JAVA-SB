@@ -42,7 +42,10 @@ const PromoSection = () => {
                 <p>✓ Envío gratis en compras superiores a $50</p>
               </div>
 
-              <Button variant="secondary" className="w-full shadow-medium hover:shadow-deep">
+              <Button 
+                variant="outline" 
+                className="w-full shadow-medium hover:shadow-elegant bg-white text-primary border-white hover:bg-primary/10 hover:scale-105 transition-all duration-300 font-semibold"
+              >
                 Ver Ofertas
               </Button>
             </div>
@@ -72,7 +75,10 @@ const PromoSection = () => {
                 <p>✓ 3x2 en productos seleccionados</p>
               </div>
 
-              <Button variant="default" className="w-full shadow-medium hover:shadow-deep">
+              <Button 
+                variant="default" 
+                className="w-full shadow-medium hover:shadow-elegant bg-foreground text-background hover:bg-foreground/90 hover:scale-105 transition-all duration-300 font-semibold"
+              >
                 Comprar Ahora
               </Button>
             </div>
@@ -80,15 +86,19 @@ const PromoSection = () => {
         </div>
 
         {/* Banner Adicional */}
-        <div className="mt-6 rounded-2xl bg-secondary p-8 text-center shadow-soft hover:shadow-medium transition-smooth animate-fade-in" style={{ animationDelay: '0.2s' }}>
+        <div className="mt-6 rounded-2xl bg-accent p-8 text-center shadow-soft hover:shadow-medium transition-smooth animate-fade-in" style={{ animationDelay: '0.2s' }}>
           <div className="max-w-3xl mx-auto">
-            <h5 className="text-2xl font-bold mb-3">
+            <h5 className="text-2xl font-bold mb-3 text-foreground">
               🎁 Regalo Especial en tu Primera Compra
             </h5>
             <p className="text-muted-foreground mb-4">
               Recibe un kit de muestras premium totalmente gratis en tu primer pedido superior a $30
             </p>
-            <Button variant="hero" size="lg">
+            <Button 
+              variant="hero" 
+              size="lg"
+              className="hover:scale-105 hover:shadow-elegant transition-all duration-300"
+            >
               Comenzar a Comprar
             </Button>
           </div>

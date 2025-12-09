@@ -1,10 +1,10 @@
 package com.backend.backend.Entity;
 
 import jakarta.persistence.*;
-import java.util.Set;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "rol")
+@Table(name = "rol")  // Ajusta el nombre de la tabla según tu BD
 public class Rol {
 
     @Id
@@ -12,26 +12,31 @@ public class Rol {
     @Column(name = "id_rol")
     private Integer id;
 
-    @Column(name = "descripcion", nullable = false, length = 50)
+    @Column(name = "nombre", length = 50, nullable = false)
+    private String nombre;
+
+    @Column(name = "descripcion", length = 255)
     private String descripcion;
 
-    @Column(name = "estado", length = 20)
-    private String estado;
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
 
-    // Relación con usuarios
-    @OneToMany(mappedBy = "rol", cascade = CascadeType.ALL)
-    private Set<Usuario> usuarios;
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 
     // Getters y Setters
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
 
+    public String getNombre() { return nombre; }
+    public void setNombre(String nombre) { this.nombre = nombre; }
+
     public String getDescripcion() { return descripcion; }
     public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
 
-    public String getEstado() { return estado; }
-    public void setEstado(String estado) { this.estado = estado; }
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 
-    public Set<Usuario> getUsuarios() { return usuarios; }
-    public void setUsuarios(Set<Usuario> usuarios) { this.usuarios = usuarios; }
+    public LocalDateTime getUpdatedAt() { return updatedAt; }
+    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
 }

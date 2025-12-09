@@ -1,45 +1,50 @@
 package com.backend.backend.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "servicios")
+// Evita que Jackson intente serializar los proxies de Hibernate (ByteBuddyInterceptor)
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Servicios {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_servicio")
-    private Integer id;
+    private Integer idServicio;
 
-    @ManyToOne
+    // relacion a TipoServicio (según DDL: id_tipo_servicio)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_tipo_servicio", nullable = false)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) // adicional sobre la propiedad
     private TipoServicio tipoServicio;
 
-    @Column(name = "nombre_servicio", nullable = false, length = 100)
+    @Column(name = "nombre_servicio", nullable = false)
     private String nombreServicio;
 
-    @Column(name = "categoria_servicio", nullable = false, length = 50)
+    @Column(name = "categoria_servicio", nullable = false)
     private String categoriaServicio;
 
     @Column(name = "precio_servicio", nullable = false)
     private Double precioServicio;
 
-    @Column(name = "duracion_servicio", nullable = false, length = 50)
+    @Column(name = "duracion_servicio", nullable = false)
     private String duracionServicio;
 
-    @Column(name = "descripcion_servicio", nullable = false)
+    @Column(name = "descripcion_servicio", columnDefinition = "TEXT")
     private String descripcionServicio;
 
-    @Column(name = "estado_servicio", nullable = false, length = 20)
+    @Column(name = "estado_servicio", nullable = false)
     private String estadoServicio;
 
-    // Getters y Setters
-    public Integer getId() {
-        return id;
+    // getters / setters "canonicos"
+    public Integer getIdServicio() {
+        return idServicio;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setIdServicio(Integer idServicio) {
+        this.idServicio = idServicio;
     }
 
     public TipoServicio getTipoServicio() {
@@ -98,4 +103,12 @@ public class Servicios {
         this.estadoServicio = estadoServicio;
     }
 
+    // Métodos adaptadores para compatibilidad con controladores/servicios existentes
+    public Integer getId() {
+        return this.idServicio;
+    }
+
+    public void setId(Integer id) {
+        this.idServicio = id;
+    }
 }

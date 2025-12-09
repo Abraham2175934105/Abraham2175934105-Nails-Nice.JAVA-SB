@@ -8,52 +8,68 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Nails Nice - Rosado Pastel & Blanco */
+    /* Nails Nice - Paleta Profesional: Negro, Gris, Teal apagado */
     --background: 0 0% 100%;
-    --foreground: 340 15% 25%;
+    --foreground: 0 0% 0%;
 
     --card: 0 0% 100%;
-    --card-foreground: 340 15% 25%;
+    --card-foreground: 0 0% 0%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 340 15% 25%;
+    --popover-foreground: 0 0% 0%;
 
-    /* Rosado pastel como color principal */
-    --primary: 350 100% 86%;
-    --primary-foreground: 340 15% 25%;
-    --primary-hover: 350 100% 80%;
-    --primary-glow: 350 100% 92%;
+    /* Negro como color principal */
+    --primary: 0 0% 0%;
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: 0 0% 15%;
+    --primary-glow: 0 0% 20%;
 
-    /* Beige rosado como secundario */
-    --secondary: 345 30% 94%;
-    --secondary-foreground: 340 15% 25%;
+    /* Teal apagado como secundario */
+    --secondary: 180 20% 40%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 345 20% 96%;
-    --muted-foreground: 340 10% 50%;
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 40%;
 
-    /* Rosa palo más oscuro como accent */
-    --accent: 345 45% 88%;
-    --accent-foreground: 340 15% 25%;
+    /* Teal apagado - color de acento */
+    --accent: 180 15% 90%;
+    --accent-foreground: 0 0% 0%;
+    
+    /* Gris cálido - color complementario */
+    --mint: 0 0% 85%;
+    --mint-foreground: 0 0% 0%;
+    
+    /* Color de ayuda destacado */
+    --help: 45 100% 50%;
+    --help-foreground: 0 0% 0%;
+    
+    /* Color de campo requerido */
+    --required: 0 84% 60%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 345 25% 92%;
-    --input: 345 25% 95%;
-    --ring: 350 100% 86%;
+    --border: 0 0% 85%;
+    --input: 0 0% 95%;
+    --ring: 0 0% 0%;
 
     --radius: 0.75rem;
     
-    /* Sombras 3D suaves */
-    --shadow-soft: 0 2px 8px rgba(255, 182, 193, 0.15);
-    --shadow-medium: 0 4px 16px rgba(255, 182, 193, 0.2);
-    --shadow-deep: 0 8px 24px rgba(255, 182, 193, 0.25);
-    --shadow-glow: 0 0 20px rgba(255, 182, 193, 0.3);
+    /* Sombras profesionales */
+    --shadow-soft: 0 2px 8px rgba(0, 0, 0, 0.08);
+    --shadow-medium: 0 4px 16px rgba(0, 0, 0, 0.12);
+    --shadow-deep: 0 8px 24px rgba(0, 0, 0, 0.16);
+    --shadow-glow: 0 0 20px rgba(0, 0, 0, 0.2);
+    --shadow-elegant: 0 10px 30px rgba(0, 0, 0, 0.15);
     
-    /* Gradientes */
-    --gradient-primary: linear-gradient(135deg, hsl(350 100% 86%), hsl(345 100% 92%));
-    --gradient-soft: linear-gradient(180deg, hsl(0 0% 100%), hsl(345 30% 98%));
-    --gradient-accent: linear-gradient(135deg, hsl(345 45% 88%), hsl(340 50% 92%));
+    /* Gradientes profesionales */
+    --gradient-primary: linear-gradient(135deg, hsl(0 0% 0%), hsl(0 0% 20%));
+    --gradient-soft: linear-gradient(180deg, hsl(0 0% 100%), hsl(0 0% 98%));
+    --gradient-accent: linear-gradient(135deg, hsl(180 15% 85%), hsl(180 15% 90%));
+    --gradient-mint: linear-gradient(135deg, hsl(0 0% 85%), hsl(0 0% 90%));
+    --gradient-mixed: linear-gradient(135deg, hsl(0 0% 0%) 0%, hsl(180 20% 40%) 50%, hsl(0 0% 85%) 100%);
+    --gradient-dark: linear-gradient(135deg, hsl(0 0% 0%), hsl(0 0% 15%));
+    --gradient-hero: linear-gradient(135deg, hsl(0 0% 0%) 0%, hsl(180 20% 40%) 50%, hsl(0 0% 98%) 100%);
     
     /* Transiciones suaves */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -76,6 +92,13 @@ All colors MUST be HSL.
     --sidebar-border: 220 13% 91%;
 
     --sidebar-ring: 217.2 91.2% 59.8%;
+    
+    /* Chart colors */
+    --chart-1: 0 0% 0%;
+    --chart-2: 180 20% 40%;
+    --chart-3: 0 0% 50%;
+    --chart-4: 180 15% 60%;
+    --chart-5: 0 0% 30%;
   }
 
   .dark {
@@ -88,10 +111,10 @@ All colors MUST be HSL.
     --popover: 340 15% 12%;
     --popover-foreground: 345 30% 95%;
 
-    --primary: 350 100% 86%;
-    --primary-foreground: 340 15% 25%;
-    --primary-hover: 350 100% 80%;
-    --primary-glow: 350 100% 92%;
+    --primary: 0 0% 100%;
+    --primary-foreground: 0 0% 0%;
+    --primary-hover: 0 0% 90%;
+    --primary-glow: 0 0% 85%;
 
     --secondary: 340 15% 18%;
     --secondary-foreground: 345 30% 95%;
@@ -99,8 +122,11 @@ All colors MUST be HSL.
     --muted: 340 10% 20%;
     --muted-foreground: 340 10% 65%;
 
-    --accent: 345 45% 35%;
-    --accent-foreground: 345 30% 95%;
+    --accent: 180 15% 25%;
+    --accent-foreground: 0 0% 100%;
+    
+    --mint: 0 0% 20%;
+    --mint-foreground: 0 0% 100%;
 
     --destructive: 0 62.8% 50%;
     --destructive-foreground: 0 0% 100%;
@@ -109,14 +135,14 @@ All colors MUST be HSL.
     --input: 340 15% 18%;
     --ring: 350 100% 86%;
     
-    --sidebar-background: 340 20% 10%;
-    --sidebar-foreground: 345 30% 95%;
-    --sidebar-primary: 350 100% 86%;
-    --sidebar-primary-foreground: 340 15% 25%;
-    --sidebar-accent: 340 15% 18%;
-    --sidebar-accent-foreground: 345 30% 95%;
-    --sidebar-border: 340 15% 20%;
-    --sidebar-ring: 350 100% 86%;
+    --sidebar-background: 0 0% 5%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-primary: 0 0% 100%;
+    --sidebar-primary-foreground: 0 0% 0%;
+    --sidebar-accent: 0 0% 15%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 0 0% 20%;
+    --sidebar-ring: 0 0% 100%;
   }
 }
 
@@ -177,5 +203,33 @@ All colors MUST be HSL.
   
   .hover-glow {
     @apply transition-smooth hover:shadow-glow;
+  }
+  
+  .hover-scale {
+    @apply transition-smooth hover:scale-105;
+  }
+  
+  .hover-elevate {
+    @apply transition-smooth hover:-translate-y-2 hover:shadow-elegant;
+  }
+  
+  .gradient-dark {
+    background: var(--gradient-dark);
+  }
+  
+  .gradient-hero {
+    background: var(--gradient-hero);
+  }
+  
+  .gradient-mint {
+    background: var(--gradient-mint);
+  }
+  
+  .gradient-mixed {
+    background: var(--gradient-mixed);
+  }
+  
+  .shadow-elegant {
+    box-shadow: var(--shadow-elegant);
   }
 }

@@ -19,6 +19,10 @@ public class Cliente {
     @Column(name = "direccion", length = 255)
     private String direccion;
 
+    // Nuevo campo telefono
+    @Column(name = "telefono", length = 50)
+    private String telefono;
+
     @Column(name = "puntos_fidelidad")
     private Integer puntosFidelidad;
 
@@ -37,6 +41,10 @@ public class Cliente {
 
     public String getDireccion() { return direccion; }
     public void setDireccion(String direccion) { this.direccion = direccion; }
+
+    // Telefono
+    public String getTelefono() { return telefono; }
+    public void setTelefono(String telefono) { this.telefono = telefono; }
 
     public Integer getPuntosFidelidad() { return puntosFidelidad; }
     public void setPuntosFidelidad(Integer puntosFidelidad) { this.puntosFidelidad = puntosFidelidad; }

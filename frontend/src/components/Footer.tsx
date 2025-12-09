@@ -138,7 +138,7 @@ const Footer = () => {
 
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-border text-center text-sm text-muted-foreground">
-          <p>&copy; 2025 Nails Nice. Todos los derechos reservados. Diseñado con amor para ti ✨</p>
+          <p>&copy; 2024 Nails Nice. Todos los derechos reservados. Diseñado con amor para ti ✨</p>
         </div>
       </div>
     </footer>
