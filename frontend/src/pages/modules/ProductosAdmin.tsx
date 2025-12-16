@@ -68,7 +68,7 @@ export default function ProductosAdmin() {
   const [currentItem, setCurrentItem] = useState<ProductoUI | null>(null);
 
   // Form state (producto)
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<any>({
     nombre: "",
     descripcion: "",
     precio: "",
@@ -303,8 +303,9 @@ export default function ProductosAdmin() {
   }, []);
 
   // Helper para actualizar campo y limpiar error de ese campo
-  const updateField = (field: string, value: string) => {
-    setForm((prev) => ({ ...prev, [field]: value }));
+  // Nota: ahora acepta value: any (puede ser boolean, string, number, etc.)
+  const updateField = (field: string, value: any) => {
+    setForm((prev: any) => ({ ...prev, [field]: value }));
     setErrors((prev) => {
       if (!prev[field]) return prev;
       const copy = { ...prev };
@@ -331,10 +332,10 @@ export default function ProductosAdmin() {
   const validateForm = () => {
     const e: Record<string, string> = {};
     // producto: todos obligatorios
-    if (!form.nombre.trim()) e.nombre = "Nombre requerido";
-    if (!form.descripcion.trim()) e.descripcion = "Descripción requerida";
+    if (!form.nombre?.trim()) e.nombre = "Nombre requerido";
+    if (!form.descripcion?.trim()) e.descripcion = "Descripción requerida";
     if (!form.precio || Number.isNaN(Number(form.precio)) || Number(form.precio) <= 0) e.precio = "Precio debe ser un número mayor a cero";
-    if (!form.estadoProducto.trim()) e.estadoProducto = "Estado requerido";
+    if (!form.estadoProducto?.trim()) e.estadoProducto = "Estado requerido";
     if (!form.imagen || !form.imagen.trim()) e.imagen = "Imagen obligatoria";
     if (!form.idCategoria) e.idCategoria = "Categoría obligatoria";
     if (!form.idMarca) e.idMarca = "Marca obligatoria";
@@ -452,7 +453,7 @@ export default function ProductosAdmin() {
     // --- rellenar con inventario existente si hay ---
     const existingInv = productInventoryMap[row.id];
     if (existingInv) {
-      setForm((prev) => ({
+      setForm((prev: any) => ({
         ...prev,
         createInventory: true,
         invCantidad: existingInv.cantidad != null ? String(existingInv.cantidad) : "",
@@ -479,89 +480,107 @@ export default function ProductosAdmin() {
     setImagenPreview(previewUrl);
     // Actualizamos el campo 'imagen' en el formulario para la vista previa.
     // El backend usará el archivo, no esta URL.
-    setForm((f) => ({ ...f, imagen: previewUrl }));
+    setForm((f: any) => ({ ...f, imagen: previewUrl }));
   };
 
-  const handleSave = async () => {
-    const validationErrors = validateForm();
-    const keys = Object.keys(validationErrors);
-    if (keys.length > 0) {
-      showValidationToasts(validationErrors);
-      return;
-    }
+// Reemplaza únicamente la función handleSave por esta versión:
 
-    const productoJson = {
-      nombre: form.nombre,
-      descripcion: form.descripcion,
-      precio: Number(form.precio),
-      estadoProducto: form.estadoProducto.toLowerCase(),
-      imagen: form.imagen || null,
-      idColor: form.idColor ? Number(form.idColor) : null,
-      idMarca: form.idMarca ? Number(form.idMarca) : null,
-      idUnidadMedida: form.idUnidadMedida ? Number(form.idUnidadMedida) : null,
-      idCategoria: form.idCategoria ? Number(form.idCategoria) : null,
-    };
+const handleSave = async () => {
+  const validationErrors = validateForm();
+  const keys = Object.keys(validationErrors);
+  if (keys.length > 0) {
+    showValidationToasts(validationErrors);
+    return;
+  }
 
-    // **NUEVO**: Construimos un FormData para enviar todo junto.
-    const formData = new FormData();
-    formData.append("producto", JSON.stringify(productoJson));
+  // Construimos el objeto base (sin imagen aún)
+  const productoPayload = {
+    nombre: form.nombre,
+    descripcion: form.descripcion,
+    precio: Number(form.precio),
+    estadoProducto: (form.estadoProducto || "activo").toLowerCase(),
+    imagen: null as string | null,
+    idColor: form.idColor ? Number(form.idColor) : null,
+    idMarca: form.idMarca ? Number(form.idMarca) : null,
+    idUnidadMedida: form.idUnidadMedida ? Number(form.idUnidadMedida) : null,
+    idCategoria: form.idCategoria ? Number(form.idCategoria) : null,
+  };
+
+  try {
+    // 1) Si hay un archivo nuevo seleccionado -> subirlo primero
     if (imagenFile) {
-      formData.append("imagenFile", imagenFile);
+      try {
+        const uploadRes = await apiProductos.uploadImage(imagenFile);
+        productoPayload.imagen = uploadRes?.url ?? null;
+      } catch (upErr) {
+        console.error("Error subiendo imagen:", upErr);
+        toast({ title: "Error", description: "No se pudo subir la imagen.", variant: "destructive" });
+        return; // cancelar creación/actualización si falla la subida
+      }
+    } else {
+      // No se seleccionó un nuevo archivo. Si estamos editando y form.imagen contiene
+      // una URL válida (no un blob local), la mantenemos. Si es un blob: URL, la ignoramos.
+      if (form.imagen && typeof form.imagen === "string") {
+        if (form.imagen.startsWith("blob:")) {
+          productoPayload.imagen = null;
+        } else {
+          productoPayload.imagen = form.imagen;
+        }
+      } else {
+        productoPayload.imagen = null;
+      }
     }
 
-    try {
-      if (currentItem) {
-        // **MODIFICADO**: Enviamos FormData en lugar de JSON
-        const updated = await apiProductos.updateProducto(currentItem.id, formData);
-        const maps = buildLookupMapsFromState();
-        setProductos((prev) => prev.map((p) => (p.id === updated.id ? mapBackendToUI(updated, maps) : p)));
-        toast({ title: "Actualizado", description: "Producto actualizado correctamente." });
-      } else {
-        // **MODIFICADO**: Enviamos FormData en lugar de JSON
-        const created = await apiProductos.createProducto(formData);
-        const maps = buildLookupMapsFromState();
-        setProductos((prev) => [mapBackendToUI(created, maps), ...prev]);
-        toast({ title: "Creado", description: "Producto creado correctamente." });
+    if (currentItem) {
+      // Update (usar JSON)
+      const updated = await apiProductos.updateProductoJSON(currentItem.id, productoPayload);
+      const maps = buildLookupMapsFromState();
+      setProductos((prev) => prev.map((p) => (p.id === updated.id ? mapBackendToUI(updated, maps) : p)));
+      toast({ title: "Actualizado", description: "Producto actualizado correctamente." });
+    } else {
+      // Create (usar JSON)
+      const created = await apiProductos.createProductoJSON(productoPayload);
+      const maps = buildLookupMapsFromState();
+      setProductos((prev) => [mapBackendToUI(created, maps), ...prev]);
+      toast({ title: "Creado", description: "Producto creado correctamente." });
 
-        // si el usuario marcó "Crear inventario", hacemos la llamada a inventario
-        if (form.createInventory) {
-          try {
-            // validación de fecha en frontend: no permitir > hoy
-            if (form.invFechaIngreso) {
-              const fecha = new Date(form.invFechaIngreso);
-              const hoy = new Date();
-              hoy.setHours(0,0,0,0);
-              fecha.setHours(0,0,0,0);
-              if (fecha > hoy) {
-                throw new Error("Fecha de ingreso no puede ser mayor a hoy");
-              }
-            }
-
-            const invPayload = {
-              idProducto: created.id,
-              idUbicacion: Number(form.invIdUbicacion),
-              idProveedor: Number(form.invIdProveedor),
-              cantidad: Number(form.invCantidad),
-              stock: Number(form.invStock),
-              estado: form.invEstado,
-              fechaIngreso: form.invFechaIngreso,
-              createdWithProduct: true, // indicamos que fue creado junto al producto
-            };
-            await apiInv.createInventario(invPayload);
-            toast({ title: "Inventario", description: "Registro de inventario creado." });
-          } catch (err) {
-            console.error("Error creando inventario tras crear producto", err);
-            toast({ title: "Advertencia", description: "Producto creado pero no se pudo crear inventario.", variant: "destructive" });
+      // si el usuario marcó "Crear inventario", hacemos la llamada a inventario
+      if (form.createInventory) {
+        try {
+          if (form.invFechaIngreso) {
+            const fecha = new Date(form.invFechaIngreso);
+            const hoy = new Date();
+            hoy.setHours(0,0,0,0);
+            fecha.setHours(0,0,0,0);
+            if (fecha > hoy) throw new Error("Fecha de ingreso no puede ser mayor a hoy");
           }
+
+          const invPayload = {
+            idProducto: created.id,
+            idUbicacion: Number(form.invIdUbicacion),
+            idProveedor: Number(form.invIdProveedor),
+            cantidad: Number(form.invCantidad),
+            stock: Number(form.invStock),
+            estado: form.invEstado,
+            fechaIngreso: form.invFechaIngreso,
+            createdWithProduct: true,
+          };
+          await apiInv.createInventario(invPayload);
+          toast({ title: "Inventario", description: "Registro de inventario creado." });
+        } catch (err) {
+          console.error("Error creando inventario tras crear producto", err);
+          toast({ title: "Advertencia", description: "Producto creado pero no se pudo crear inventario.", variant: "destructive" });
         }
       }
-      setIsDialogOpen(false);
-    } catch (err: any) {
-      console.error("Error guardando producto", err);
-      const msg = err?.message || "Error en servidor";
-      toast({ title: "Error", description: msg, variant: "destructive" });
     }
-  };
+
+    setIsDialogOpen(false);
+  } catch (err: any) {
+    console.error("Error guardando producto", err);
+    const msg = err?.message || "Error en servidor";
+    toast({ title: "Error", description: msg, variant: "destructive" });
+  }
+};
 
   // Form JSX
   const formContent = (
@@ -701,8 +720,8 @@ export default function ProductosAdmin() {
           <input
             data-field="createInventory"
             type="checkbox"
-            checked={form.createInventory}
-            onChange={(e) => updateField("createInventory", String(e.target.checked))}
+            checked={!!form.createInventory}
+            onChange={(e) => updateField("createInventory", e.target.checked)}
           />
           <span className="font-medium">Crear registro de inventario para este producto</span>
         </label>

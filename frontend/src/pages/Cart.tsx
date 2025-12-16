@@ -3,14 +3,17 @@ import { Trash2, Plus, Minus, ArrowRight, Package, CreditCard, MapPin } from "lu
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CartHeader from "@/components/CartHeader";
 import Footer from "@/components/Footer";
 import { useCart } from "@/contexts/CartContext";
+import { useToast } from "@/hooks/use-toast";
 
 const Cart = () => {
   // renombramos el total del contexto para evitar colisiones con el total del pedido
   const { items, remove, updateQty, count, total: ctxTotal, sync } = useCart();
+  const navigate = useNavigate();
+  const toast = useToast().toast;
 
   useEffect(() => {
     void sync();
@@ -25,7 +28,7 @@ const Cart = () => {
   const currentStep = 1;
 
   // normalizamos items a la forma que usa la UI
-  const cartItems = items.map((it) => {
+  const cartItems = (items || []).map((it) => {
     const anyIt = it as any;
     return {
       id: it.id ?? it.idProducto,
@@ -41,6 +44,8 @@ const Cart = () => {
   const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const shipping = subtotal > 50000 ? 0 : 5.99;
   const orderTotal = subtotal + shipping;
+
+  const hasItems = cartItems.length > 0;
 
   return (
     <div className="min-h-screen bg-background">
@@ -193,15 +198,25 @@ const Cart = () => {
               </div>
 
               <div className="space-y-3">
-                <Link to="/direccion" className="block">
-                  <Button 
-                    className="w-full shadow-medium hover:shadow-glow"
-                    disabled={cartItems.length === 0}
-                  >
-                    Continuar
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                </Link>
+                {/* Botón Continuar ahora usa navigate en onClick para evitar que Link navegue aun si está deshabilitado */}
+                <Button 
+                  className="w-full shadow-medium hover:shadow-glow flex items-center justify-center"
+                  disabled={!hasItems}
+                  onClick={() => {
+                    if (hasItems) {
+                      navigate("/direccion");
+                    } else {
+                      toast({
+                        title: "Carrito vacío",
+                        description: "Agrega productos al carrito antes de continuar.",
+                        variant: "default",
+                      });
+                    }
+                  }}
+                >
+                  Continuar
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
 
                 <Link to="/productos" className="block">
                   <Button variant="outline" className="w-full">

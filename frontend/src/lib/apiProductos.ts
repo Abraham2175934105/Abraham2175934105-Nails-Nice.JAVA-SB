@@ -1,3 +1,4 @@
+// (modificado para añadir createProductoJSON; mantengo createProducto que acepta FormData por compatibilidad)
 const API_BASE = import.meta.env.VITE_API_URL ?? "http://localhost:8081";
 
 type ProductoRequest = {
@@ -25,13 +26,10 @@ export async function getProducto(id: number): Promise<any> {
   return await res.json();
 }
 
+// CREATE que acepta FormData (mantengo por compatibilidad con backends que soporten multipart)
 export async function createProducto(formData: FormData): Promise<any> {
   const res = await fetch(`${API_BASE}/api/productos`, {
     method: "POST",
-    headers: {
-      // NO establezcas 'Content-Type', el navegador lo hará por ti
-      // para incluir el 'boundary' correcto para FormData.
-    },
     body: formData,
   });
   if (res.status !== 201 && !res.ok) {
@@ -41,12 +39,41 @@ export async function createProducto(formData: FormData): Promise<any> {
   return await res.json();
 }
 
-export async function updateProducto(id: number, formData: FormData): Promise<any> {
+// NUEVA: crear producto enviando JSON (application/json)
+export async function createProductoJSON(payload: ProductoRequest): Promise<any> {
+  const res = await fetch(`${API_BASE}/api/productos`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  });
+  if (res.status !== 201 && !res.ok) {
+    const body = await res.json().catch(() => null);
+    throw new Error(body?.message || `Error ${res.status}`);
+  }
+  return await res.json();
+}
+
+// Se añadio este nuevo metodo el cual procesa el cargue del producto 
+export async function updateProductoJSON(id: number, payload: ProductoRequest): Promise<any> {
   const res = await fetch(`${API_BASE}/api/productos/${id}`, {
     method: "PUT",
     headers: {
-      // De nuevo, no establezcas 'Content-Type' manualmente.
+      "Content-Type": "application/json",
     },
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) {
+    const body = await res.json().catch(() => null);
+    throw new Error(body?.message || `Error ${res.status}`);
+  }
+  return await res.json();
+}
+
+export async function updateProducto(id: number, formData: FormData): Promise<any> {
+  const res = await fetch(`${API_BASE}/api/productos/${id}`, {
+    method: "PUT",
     body: formData,
   });
   if (!res.ok) {
@@ -93,6 +120,7 @@ export async function getUnidades(): Promise<any[]> {
 /* ---------- upload de imagen (multipart/form-data) ---------- */
 export async function uploadImage(file: File): Promise<{ url: string }> {
   const form = new FormData();
+  // ojo: si el backend espera 'file' este nombre debe coincidir
   form.append("file", file);
   const res = await fetch(`${API_BASE}/api/uploads`, {
     method: "POST",
@@ -131,6 +159,7 @@ export default {
   getProductos,
   getProducto,
   createProducto,
+  createProductoJSON,
   updateProducto,
   deleteProducto,
   getCategorias,

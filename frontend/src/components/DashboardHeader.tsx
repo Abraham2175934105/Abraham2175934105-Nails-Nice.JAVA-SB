@@ -15,7 +15,8 @@ import { useAuth } from "@/contexts/AuthContext";
 
 export default function DashboardHeader() {
   const navigate = useNavigate();
-  const { user: authUser } = useAuth();
+  // Ahora usamos logout desde el contexto
+  const { user: authUser, logout } = useAuth();
 
   // Normalizar user desde AuthContext (muchos backends usan nombres distintos)
   const u: any = authUser ?? (() => {
@@ -35,12 +36,16 @@ export default function DashboardHeader() {
   const admin = { name, email, initials, avatar };
 
   const handleLogout = () => {
-    // Limpiar storage y redirigir a login
-    localStorage.removeItem("user");
-    localStorage.removeItem("nn_user");
-    localStorage.removeItem("nn_token");
-    // Si guardas otros keys, remuévelos también
-    navigate("/login");
+    // Usamos la función logout del contexto (limpia estado + localStorage y navega)
+    try {
+      logout();
+    } catch (e) {
+      // fallback: limpiar storage y redirigir
+      localStorage.removeItem("user");
+      localStorage.removeItem("nn_user");
+      localStorage.removeItem("nn_token");
+      navigate("/login");
+    }
   };
 
   return (

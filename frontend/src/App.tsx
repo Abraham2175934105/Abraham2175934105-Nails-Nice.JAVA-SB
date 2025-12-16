@@ -29,6 +29,7 @@ import Tickets from "./pages/modules/Tickets";
 
 import { AuthProvider } from "./contexts/AuthContext";
 import { CartProvider } from "./contexts/CartContext";
+import ProtectedRoute from "@/components/ProtectedRoute";
 
 const queryClient = new QueryClient();
 
@@ -46,25 +47,26 @@ const App = () => (
             <Route path="/recuperar-contrasena" element={<RecuperarContrasena />} />
             <Route path="/register" element={<Register />} />
             <Route path="/productos" element={<Productos />} />
-            {/* RUTA UNIFICADA: /productos/:id */}
             <Route path="/productos/:id" element={<ProductoDetalle />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/direccion" element={<Direccion />} />
             <Route path="/pago" element={<Pago />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/perfil-admin" element={<PerfilAdmin />} />
-            <Route path="/users" element={<Users />} />
-            
-            {/* Main Modules */}
-            <Route path="/usuarios" element={<Usuarios />} />
-            <Route path="/productos-admin" element={<ProductosAdmin />} />
-            <Route path="/inventario" element={<Inventario />} />
-            <Route path="/ventas" element={<Ventas />} />
-            <Route path="/pedidos" element={<Pedidos />} />
-            <Route path="/servicios" element={<Servicios />} />
-            <Route path="/promociones" element={<Promociones />} />
-            <Route path="/tickets" element={<Tickets />} />
-            
+
+            {/* Rutas protegidas: envueltas en ProtectedRoute */}
+            <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+            <Route path="/perfil-admin" element={<ProtectedRoute><PerfilAdmin /></ProtectedRoute>} />
+            <Route path="/users" element={<ProtectedRoute><Users /></ProtectedRoute>} />
+
+            {/* Main Modules (protegidos) */}
+            <Route path="/usuarios" element={<ProtectedRoute><Usuarios /></ProtectedRoute>} />
+            <Route path="/productos-admin" element={<ProtectedRoute><ProductosAdmin /></ProtectedRoute>} />
+            <Route path="/inventario" element={<ProtectedRoute><Inventario /></ProtectedRoute>} />
+            <Route path="/ventas" element={<ProtectedRoute><Ventas /></ProtectedRoute>} />
+            <Route path="/pedidos" element={<ProtectedRoute><Pedidos /></ProtectedRoute>} />
+            <Route path="/servicios" element={<ProtectedRoute><Servicios /></ProtectedRoute>} />
+            <Route path="/promociones" element={<ProtectedRoute><Promociones /></ProtectedRoute>} />
+            <Route path="/tickets" element={<ProtectedRoute><Tickets /></ProtectedRoute>} />
+
             {/* catch-all */}
             <Route path="*" element={<NotFound />} />
           </Routes>
